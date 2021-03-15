@@ -9,7 +9,7 @@ import com.example.noteapplication.ColorType.getProjectColorType
 import com.example.noteapplication.data.model.Project
 import kotlinx.android.synthetic.main.item_project.view.*
 
-class ProjectAdapter : RecyclerView.Adapter<ProjectViewHolder>() {
+class ProjectAdapter(private var listener: ClickListener) : RecyclerView.Adapter<ProjectViewHolder>() {
 
     private var items = mutableListOf<Project>()
 
@@ -24,11 +24,18 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectViewHolder>() {
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(item)
+        }
     }
 
     fun addItems(data: MutableList<Project>) {
         items = data
         notifyDataSetChanged()
+    }
+
+    interface ClickListener {
+        fun onItemClick(item: Project)
     }
 
 }
@@ -37,6 +44,7 @@ class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: Project) {
         itemView.view_project_indicator.setBackgroundColor(getProjectColorType(item.color))
         itemView.tv_title.text = item.name
+
     }
 
 }

@@ -15,7 +15,7 @@ class ProjectRepository(var callback: RequestResult) {
     fun fetchProjects() {
         api.fetchProjects().enqueue(object : Callback<MutableList<Project>> {
             override fun onFailure(call: Call<MutableList<Project>>, t: Throwable) {
-                callback.onFailure(t)
+                callback.onFailure(t.message)
             }
 
             override fun onResponse(call: Call<MutableList<Project>>, response: Response<MutableList<Project>>) {

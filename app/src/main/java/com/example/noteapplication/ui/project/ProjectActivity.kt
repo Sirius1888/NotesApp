@@ -1,5 +1,6 @@
 package com.example.noteapplication.ui.project
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,9 +9,10 @@ import com.example.noteapplication.R
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.RequestResult
 import com.example.noteapplication.repository.ProjectRepository
+import com.example.noteapplication.ui.task.TaskListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class ProjectActivity : AppCompatActivity(), RequestResult {
+class ProjectActivity : AppCompatActivity(), RequestResult, ProjectAdapter.ClickListener {
 
     private lateinit var adapter: ProjectAdapter
     private lateinit var repository: ProjectRepository
@@ -24,7 +26,7 @@ class ProjectActivity : AppCompatActivity(), RequestResult {
     }
 
     private fun setupRecyclerView() {
-        adapter = ProjectAdapter()
+        adapter = ProjectAdapter(this)
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = adapter
     }
@@ -42,8 +44,18 @@ class ProjectActivity : AppCompatActivity(), RequestResult {
         adapter.addItems(data)
     }
 
-    override fun onFailure(t: Throwable) {
-        Toast.makeText(this, t.message, Toast.LENGTH_LONG).show()
+    override fun onFailure(t: String?) {
+        Toast.makeText(this, t, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onItemClick(item: Project) {
+        val intent = Intent(this, TaskListActivity::class.java)
+        intent.putExtra(PROJECT_KEY, item)
+        startActivity(intent)
+    }
+
+    companion object {
+        const val PROJECT_KEY = "PROJECT_KEY"
     }
 
 }

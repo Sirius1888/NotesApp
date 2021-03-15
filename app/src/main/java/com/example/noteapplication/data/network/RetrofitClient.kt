@@ -22,7 +22,7 @@ class RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val tasksApi = retrofit.create(TaskApi::class.java)
     val projectApi = retrofit.create(ProjectApi::class.java)
+    val tasksApi = retrofit.create(TaskApi::class.java)
 
 }

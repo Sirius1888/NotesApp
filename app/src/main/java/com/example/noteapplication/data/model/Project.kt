@@ -1,6 +1,9 @@
 package com.example.noteapplication.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class Project(
@@ -15,4 +18,4 @@ data class Project(
         var syncId: Int? = null,
         @SerializedName("inbox_project")
         var inboxProject: Boolean? = null
-)
+) : Serializable
