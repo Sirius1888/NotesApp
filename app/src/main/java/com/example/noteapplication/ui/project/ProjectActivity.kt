@@ -20,6 +20,7 @@ class ProjectActivity : AppCompatActivity(), RequestResult {
         setContentView(R.layout.activity_main)
         setupRecyclerView()
         setupRepository()
+        fetchData()
     }
 
     private fun setupRecyclerView() {
@@ -30,6 +31,9 @@ class ProjectActivity : AppCompatActivity(), RequestResult {
 
     private fun setupRepository() {
         repository = ProjectRepository(this)
+    }
+
+    private fun fetchData() {
         repository.fetchProjects()
     }
 
