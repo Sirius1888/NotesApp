@@ -37,14 +37,11 @@ class ProjectAdapter(private var listener: ClickListener) : RecyclerView.Adapter
     interface ClickListener {
         fun onItemClick(item: Project)
     }
-
 }
 
 class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: Project) {
         itemView.view_project_indicator.setBackgroundColor(getProjectColorType(item.color))
         itemView.tv_title.text = item.name
-
     }
-
 }

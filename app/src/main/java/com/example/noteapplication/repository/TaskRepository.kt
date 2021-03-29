@@ -26,4 +26,30 @@ class TaskRepository(var callback: RequestResult) {
         })
     }
 
+    fun changeStateOfTask(id: Long?) {
+        api.changeStateOfTask(id).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                callback.onFailure(t.message)
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) callback.onSuccess("changed state of task")
+                else callback.onFailure(response.message())
+            }
+        })
+    }
+
+    fun deleteTask(id: Long?) {
+        api.deleteTask(id).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                callback.onFailure(t.message)
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) callback.onSuccess("deleted task")
+                else callback.onFailure(response.message())
+            }
+        })
+    }
+
 }

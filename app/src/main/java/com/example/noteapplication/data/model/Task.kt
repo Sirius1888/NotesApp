@@ -11,7 +11,7 @@ data class Task (
     val sectionId: Int? = null,
     val order: Int? = null,
     val content: String? = null,
-    val completed: Boolean? = null,
+    val completed: Boolean? = false,
     @SerializedName("label_ids")
     val labelIds: MutableList<Int>,
     val priority: Int? = null,
