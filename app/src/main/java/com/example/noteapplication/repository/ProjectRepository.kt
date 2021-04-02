@@ -1,5 +1,6 @@
 package com.example.noteapplication.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.RequestResult
 import com.example.noteapplication.data.network.RetrofitClient
@@ -8,18 +9,19 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ProjectRepository(var callback: RequestResult) {
+class ProjectRepository {
 
     val api = RetrofitClient().projectApi
-
+    val data: MutableLiveData<MutableList<Project>>? = MutableLiveData()
+    val message: MutableLiveData<String>? = MutableLiveData()
     fun fetchProjects() {
         api.fetchProjects().enqueue(object : Callback<MutableList<Project>> {
             override fun onFailure(call: Call<MutableList<Project>>, t: Throwable) {
-                callback.onFailure(t.message)
+                message?.value = t.message
             }
 
             override fun onResponse(call: Call<MutableList<Project>>, response: Response<MutableList<Project>>) {
-                callback.onSuccess(response.body())
+                data?.value = response.body()
             }
         })
     }

@@ -1,9 +1,14 @@
 package com.example.noteapplication.ui.task
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
 import com.example.noteapplication.data.model.Project
@@ -12,6 +17,7 @@ import com.example.noteapplication.data.network.RequestResult
 import com.example.noteapplication.repository.TaskRepository
 import com.example.noteapplication.showToast
 import com.example.noteapplication.ui.project.ProjectActivity
+import com.example.noteapplication.ui.project.ProjectViewModel
 import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickListener {
@@ -34,7 +40,7 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
     }
 
     private fun getIntentData() {
-        project = intent.getSerializableExtra(ProjectActivity.PROJECT_KEY) as Project
+        project = intent.getSerializableExtra(PROJECT_KEY) as Project
     }
 
     private fun setupRecyclerView() {
@@ -62,6 +68,7 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
 
     override fun onFailure(t: String?) {
         showToast(t)
+
     }
 
     fun printSuccessedRequest(message: String) {
@@ -76,11 +83,21 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
     }
 
     override fun onCheckedClick(item: Task) {
-        repository.changeStateOfTask(item.id)
+//        repository.changeStateOfTask(item.id)
     }
 
     override fun onRemoveItemClick(item: Task, position: Int) {
-        repository.deleteTask(item.id)
+//        repository.deleteTask(item.id)
+    }
+
+    companion object {
+        const val PROJECT_KEY = "PROJECT_KEY"
+
+        fun start(context: Context, item: Project) {
+            val intent = Intent(context, TaskListActivity::class.java)
+            intent.putExtra(PROJECT_KEY, item)
+            context.startActivity(intent)
+        }
     }
 
 }

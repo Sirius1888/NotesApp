@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApplication">
         <activity android:name=".ui.task.TaskListActivity"/>
-        <activity android:name=".ui.project.ProjectActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".ui.project.ProjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
