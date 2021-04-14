@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapplication.R
 import com.example.noteapplication.data.model.Task
 import kotlinx.android.synthetic.main.item_task.view.*
-import java.util.*
 
 class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<TasksViewHolder>() {
 

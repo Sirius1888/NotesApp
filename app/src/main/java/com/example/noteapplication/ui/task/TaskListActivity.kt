@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +16,14 @@ import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 import com.example.noteapplication.data.network.RequestResult
 import com.example.noteapplication.repository.TaskRepository
+import com.example.noteapplication.repository.TaskRepositoryImpl
 import com.example.noteapplication.showToast
 import com.example.noteapplication.ui.project.ProjectActivity
 import com.example.noteapplication.ui.project.ProjectViewModel
 import kotlinx.android.synthetic.main.activity_task_list.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickListener {
+class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
 
     //Добавить 2-3 метода для экстеншинов
     //Исправить смену состояния CheckBox в TaskAdapter при нажатии
@@ -28,19 +31,18 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
     private var project = Project()
 
     private lateinit var adapter: TaskAdapter
-    private lateinit var repository: TaskRepository
-
+    private lateinit var viewModel: TaskListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
         getIntentData()
+        viewModel = ViewModelProvider(this).get(TaskListViewModel::class.java)
         setupRecyclerView()
-        setupRepository()
-        fetchData()
+        subscribeToLiveData()
     }
 
     private fun getIntentData() {
-        project = intent.getSerializableExtra(PROJECT_KEY) as Project
+        viewModel.project = intent.getSerializableExtra(PROJECT_KEY) as Project
     }
 
     private fun setupRecyclerView() {
@@ -49,33 +51,10 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
         recycler_view.adapter = adapter
     }
 
-    private fun setupRepository() {
-        repository = TaskRepository(this)
-    }
-
-    private fun fetchData() {
-        repository.fetchAllProjectsTasks(project.id)
-    }
-
-    override fun <T> onSuccess(result: T) {
-        if (result is String) {
-            printSuccessedRequest(result)
-        } else if (result is MutableList<*>) {
-            val data = result as MutableList<Task>
-            adapter.addItems(data)
-        }
-    }
-
-    override fun onFailure(t: String?) {
-        showToast(t)
-
-    }
-
-    fun printSuccessedRequest(message: String) {
-        when(message) {
-            "changed state of task" -> showToast("Таск завершен")
-            "deleted task" -> showToast("Таск удален")
-        }
+    private fun subscribeToLiveData() {
+        viewModel.data?.observe(this, Observer {
+            adapter.addItems(it)
+        })
     }
 
     override fun onItemClick(item: Task) {
@@ -99,5 +78,4 @@ class TaskListActivity : AppCompatActivity(), RequestResult, TaskAdapter.ClickLi
             context.startActivity(intent)
         }
     }
-
 }

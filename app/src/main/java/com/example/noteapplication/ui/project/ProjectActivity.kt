@@ -17,6 +17,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class ProjectActivity : AppCompatActivity(), ProjectAdapter.ClickListener {
 
+//    SOLID
+//    S - Принцип единой ответственности
+
     private lateinit var adapter: ProjectAdapter
     private lateinit var viewModel: ProjectViewModel
 
@@ -33,7 +36,7 @@ class ProjectActivity : AppCompatActivity(), ProjectAdapter.ClickListener {
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = adapter
     }
-
+    
     private fun subsctibeToLiveData() {
         viewModel.data?.observe(this, Observer {
             if (it != null) adapter.addItems(it)

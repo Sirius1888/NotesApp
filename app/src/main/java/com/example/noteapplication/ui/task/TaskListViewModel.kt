@@ -1,23 +1,27 @@
-package com.example.noteapplication.ui.project
+package com.example.noteapplication.ui.task
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.noteapplication.data.model.Project
-import com.example.noteapplication.repository.ProjectRepositorImpl
-import com.example.noteapplication.repository.ProjectRepository
+import com.example.noteapplication.data.model.Task
+import com.example.noteapplication.repository.TaskRepositoryImpl
 
-class ProjectViewModel : ViewModel() {
+class TaskListViewModel : ViewModel() {
 
-    private val repository = ProjectRepositorImpl()
-    val data: MutableLiveData<MutableList<Project>>?
+    private val repository = TaskRepositoryImpl()
+
+    val data: MutableLiveData<MutableList<Task>>?
     val message: MutableLiveData<String>?
+
+    var project: Project? = null
 
     init {
         data = MutableLiveData()
         message = MutableLiveData()
         subscribeToData()
         subscribeToMessage()
-        repository.fetchProjects()
+        repository.fetchAllProjectsTasks(project?.id)
     }
 
     private fun subscribeToData() {
@@ -32,3 +36,7 @@ class ProjectViewModel : ViewModel() {
         }
     }
 }
+
+
+
+
