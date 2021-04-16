@@ -25,9 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
 
-    //Добавить 2-3 метода для экстеншинов
-    //Исправить смену состояния CheckBox в TaskAdapter при нажатии
-
     private var project = Project()
 
     private lateinit var adapter: TaskAdapter
