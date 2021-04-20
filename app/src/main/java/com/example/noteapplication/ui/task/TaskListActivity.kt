@@ -25,8 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
 
-    private var project = Project()
-
     private lateinit var adapter: TaskAdapter
     private lateinit var viewModel: TaskListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {

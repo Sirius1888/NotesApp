@@ -4,17 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapplication.ui.project.ProjectAdapter
-import com.example.noteapplication.ui.project.ProjectViewModel
-import kotlin.reflect.KClass
 
-abstract class BaseSearchAdapterActivity<T : ViewModel>(
+abstract class BaseActivity<VM : ViewModel>(
         private val layoutId: Int,
-        val vmClass : Class<T>
-)
-    : AppCompatActivity() {
+        private val vmClass : Class<VM>
+) : AppCompatActivity() {
 
-    lateinit var viewModel: T
+    lateinit var viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
