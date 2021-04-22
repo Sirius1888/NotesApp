@@ -9,6 +9,7 @@ import com.example.noteapplication.repository.ProjectRepository
 class ProjectViewModel : ViewModel() {
 
     private val repository = ProjectRepositorImpl()
+    var project = mutableListOf<Project>()
     val data: MutableLiveData<MutableList<Project>>?
     val message: MutableLiveData<String>?
 
@@ -22,6 +23,7 @@ class ProjectViewModel : ViewModel() {
 
     private fun subscribeToData() {
         repository.data?.observeForever {
+            project = it
             data?.value = it
         }
     }

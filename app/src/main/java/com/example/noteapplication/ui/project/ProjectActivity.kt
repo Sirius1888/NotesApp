@@ -1,5 +1,7 @@
 package com.example.noteapplication.ui.project
 
+import android.os.Handler
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
@@ -27,7 +29,27 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     private fun setupSearchView() {
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String): Boolean {
+                Handler().postDelayed(Runnable {
+                    if (newText == "") {
+                        adapter.addItems(viewModel.project)
+                    } else {
+
+                        val searchText = newText.toLowerCase()
+                        val filtered = mutableListOf<Project>()
+                        viewModel.project.forEach { if (it.name?.toLowerCase()?.contains(searchText)!!) filtered.add(it) }
+                        adapter.addItems(filtered)
+
+                    }
+                }, 800)
+                return false
+            }
+        })
     }
 
     override fun subscribeToLiveData() {

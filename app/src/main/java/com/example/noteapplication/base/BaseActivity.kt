@@ -11,7 +11,6 @@ abstract class BaseActivity<VM : ViewModel>(
 ) : AppCompatActivity() {
 
     lateinit var viewModel: VM
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
