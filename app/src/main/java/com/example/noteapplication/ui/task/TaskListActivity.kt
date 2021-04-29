@@ -67,7 +67,7 @@ class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
     companion object {
         const val PROJECT_KEY = "PROJECT_KEY"
 
-        fun start(context: Context, item: Project) {
+        fun instance(context: Context, item: Project) {
             val intent = Intent(context, TaskListActivity::class.java)
             intent.putExtra(PROJECT_KEY, item)
             context.startActivity(intent)

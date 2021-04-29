@@ -5,6 +5,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+interface Base {
+
+    val name: String
+    fun setupViews()
+    fun subscribeToLiveData()
+//    {
+//
+//    }
+
+    fun multiple(a: Int, b: Int): Int
+//    {
+//        return a * b
+//    }
+}
+
+class Mathi {
+
+}
+
+
+
 abstract class BaseActivity<VM : ViewModel>(
         private val layoutId: Int,
         private val vmClass : Class<VM>

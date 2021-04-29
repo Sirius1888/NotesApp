@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.data.model.Project
+import com.example.noteapplication.ui.create_project.CreateProjectActivity
 import com.example.noteapplication.ui.task.TaskListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,6 +21,7 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     override fun setupViews() {
         setupRecyclerView()
         setupSearchView()
+        addAction()
     }
 
     private fun setupRecyclerView() {
@@ -52,13 +54,35 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
         })
     }
 
+    private fun addAction() {
+
+    }
+
     override fun subscribeToLiveData() {
         viewModel.data?.observe(this, Observer {
-            if (it != null) adapter.addItems(it)
+            adapter.addItems(it)
         })
     }
 
     override fun onItemClick(item: Project) {
-        TaskListActivity.start(this, item)
+        TaskListActivity.instance(this, item)
+    }
+}
+
+
+fun main() {
+    val person = Elf().setPersonDefaults()
+}
+
+open class Person {
+    open fun setPersonDefaults() {
+        print("PERSON: SET DEFAULTS \n")
+    }
+}
+
+class Elf : Person() {
+    override fun setPersonDefaults() {
+        super.setPersonDefaults()
+        print("PERSON: WITH MODIFY DATA \n")
     }
 }

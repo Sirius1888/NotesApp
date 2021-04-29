@@ -2,7 +2,6 @@ package com.example.noteapplication.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.noteapplication.data.model.Project
-import com.example.noteapplication.data.network.RequestResult
 import com.example.noteapplication.data.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,3 +29,5 @@ class ProjectRepositorImpl: ProjectRepository {
         })
     }
 }
+
+//inteface, abstact, class, open class, object, enum, sealed
