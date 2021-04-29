@@ -55,7 +55,9 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     private fun addAction() {
-
+        btn_add.setOnClickListener {
+            CreateProjectActivity.instance(this)
+        }
     }
 
     override fun subscribeToLiveData() {
@@ -66,23 +68,5 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
 
     override fun onItemClick(item: Project) {
         TaskListActivity.instance(this, item)
-    }
-}
-
-
-fun main() {
-    val person = Elf().setPersonDefaults()
-}
-
-open class Person {
-    open fun setPersonDefaults() {
-        print("PERSON: SET DEFAULTS \n")
-    }
-}
-
-class Elf : Person() {
-    override fun setPersonDefaults() {
-        super.setPersonDefaults()
-        print("PERSON: WITH MODIFY DATA \n")
     }
 }
