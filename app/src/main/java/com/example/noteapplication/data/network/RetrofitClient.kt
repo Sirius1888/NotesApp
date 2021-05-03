@@ -16,6 +16,7 @@ class RetrofitClient {
         .newBuilder()
         .addInterceptor(httpLoggingInterceptor)
         .build()
+
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.todoist.com/rest/v1/")
         .client(okHttpClient)

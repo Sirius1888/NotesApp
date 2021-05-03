@@ -1,5 +1,6 @@
 package com.example.noteapplication
 
+import com.example.noteapplication.repository.ProjectRepository
 import org.junit.Test
 
 import org.junit.Assert.*

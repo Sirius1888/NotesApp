@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.showToast
@@ -21,9 +22,14 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_create -> showToast("CLICK CREATE")
+            R.id.action_create -> createProject()
         }
         return true
+    }
+
+    private fun createProject() {
+        val projectName = et_input_project_title.text.toString()
+        viewModel.createProject(projectName)
     }
 
     override fun setupViews() {
@@ -31,11 +37,20 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
         supportActionBar?.title = resources.getString(R.string.create_project)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar?.setNavigationOnClickListener { onBackPressed() }
     }
 
-
     override fun subscribeToLiveData() {
+        viewModel.createResult?.observe(this, Observer {
+            if (it == true) {
+                showToast("Проект успешно создан")
+                finish()
+            }
+        })
 
+        viewModel.message?.observe(this, Observer {
+            showToast(it)
+        })
     }
 
     companion object {

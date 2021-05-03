@@ -43,3 +43,9 @@ abstract class BaseActivity<VM : ViewModel>(
     abstract fun setupViews()
     abstract fun subscribeToLiveData()
 }
+
+//ademi = 78
+//timur = 57
+//kanaiym = 51
+//aziza = 60
+//akyikat = 74
