@@ -2,6 +2,7 @@ package com.example.noteapplication.data.network
 
 import com.example.noteapplication.data.model.Project
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -23,5 +24,5 @@ interface ProjectApi {
             "client_secret: 324fa28e17164dc8b799b373f3480806"
     )
     @POST("projects")
-    fun createProject(data: Project): Call<Project>
+    fun createProject(@Body data: Project): Call<Project>
 }
