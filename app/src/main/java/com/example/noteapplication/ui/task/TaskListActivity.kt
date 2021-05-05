@@ -30,14 +30,14 @@ class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
-        getIntentData()
         viewModel = ViewModelProvider(this).get(TaskListViewModel::class.java)
+        getIntentData()
         setupRecyclerView()
         subscribeToLiveData()
     }
 
     private fun getIntentData() {
-        viewModel.project = intent.getSerializableExtra(PROJECT_KEY) as Project
+        viewModel.project = intent.getSerializableExtra(PROJECT_KEY) as Project?
     }
 
     private fun setupRecyclerView() {

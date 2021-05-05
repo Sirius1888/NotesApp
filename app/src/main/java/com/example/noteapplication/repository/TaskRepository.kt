@@ -1,16 +1,17 @@
 package com.example.noteapplication.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
-import com.example.noteapplication.data.network.RequestResult
+import com.example.noteapplication.data.network.ResponseResult
+import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.data.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 interface TaskRepository {
-    fun fetchAllProjectsTasks(id: Long?)
+    fun fetchAllProjectsTasks(id: Long?): MutableLiveData<ResponseResult<MutableList<Task>>>
     fun changeStateOfTask(id: Long?)
     fun deleteTask(id: Long?)
 }
@@ -18,20 +19,22 @@ interface TaskRepository {
 class TaskRepositoryImpl : TaskRepository {
 
     val api = RetrofitClient().tasksApi
-    val data: MutableLiveData<MutableList<Task>>? = MutableLiveData()
-    val message: MutableLiveData<String>? = MutableLiveData()
-
-    override fun fetchAllProjectsTasks(id: Long?) {
+    
+    override fun fetchAllProjectsTasks(id: Long?): MutableLiveData<ResponseResult<MutableList<Task>>> {
+        val data: MutableLiveData<ResponseResult<MutableList<Task>>> = MutableLiveData(ResponseResult.loading())
         api.fetchTasks(id).enqueue(object : Callback<MutableList<Task>> {
+            
             override fun onFailure(call: Call<MutableList<Task>>, t: Throwable) {
-                message?.value = t.message
+                data.value = ResponseResult.error(t.message)
             }
 
             override fun onResponse(call: Call<MutableList<Task>>, response: Response<MutableList<Task>>) {
-                if (response.isSuccessful) data?.value = response.body()
-                else  message?.value = response.message()
+                data.value =
+                        if (response.isSuccessful) ResponseResult.success(response.body())
+                        else ResponseResult.error(response.message())
             }
         })
+        return data
     }
 
     override fun changeStateOfTask(id: Long?) {

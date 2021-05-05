@@ -1,5 +1,6 @@
 package com.example.noteapplication.ui.create_project
 
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.Intent
 import android.view.Menu
@@ -33,11 +34,24 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     }
 
     override fun setupViews() {
+        setupToolbar()
+        setupColorPicker()
+    }
+
+    private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = resources.getString(R.string.create_project)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    private fun setupColorPicker() {
+        btn_select_color.setOnClickListener {
+            ColorPickerBottomSheetDialogFragment().apply {
+                show(supportFragmentManager, tag)
+            }
+        }
     }
 
     override fun subscribeToLiveData() {

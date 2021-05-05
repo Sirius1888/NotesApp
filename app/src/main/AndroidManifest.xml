@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApplication">
-        <activity android:name=".ui.create_project.CreateProjectActivity"></activity>
-        <!-- <activity android:name=".ui.task.TaskListActivity"/> -->
+        <activity android:name=".ui.create_project.CreateProjectActivity" />
+        <activity android:name=".ui.task.TaskListActivity" />
         <activity android:name=".ui.project.ProjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
+import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.repository.TaskRepositoryImpl
 
 class TaskListViewModel : ViewModel() {
@@ -19,22 +20,18 @@ class TaskListViewModel : ViewModel() {
     init {
         data = MutableLiveData()
         message = MutableLiveData()
-        subscribeToData()
-        subscribeToMessage()
-        repository.fetchAllProjectsTasks(project?.id)
+        fetchAllProjectsTasks()
     }
 
-    private fun subscribeToData() {
-        repository.data?.observeForever {
-            data?.value = it
+    fun fetchAllProjectsTasks() {
+        repository.fetchAllProjectsTasks(project?.id).observeForever {
+            when (it.status) {
+                ResponseResultStatus.ERROR -> message?.value = it.message
+                ResponseResultStatus.SUCCESS -> data?.value = it.result
+            }
         }
     }
 
-    private fun subscribeToMessage() {
-        repository.message?.observeForever {
-            message?.value = it
-        }
-    }
 }
 
 

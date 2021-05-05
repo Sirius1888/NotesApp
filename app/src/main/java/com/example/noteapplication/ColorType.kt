@@ -1,8 +1,24 @@
 package com.example.noteapplication
 
 import android.graphics.Color
+import com.example.noteapplication.data.model.PrimaryColor
 
 object ColorType {
+
+    val colors = mutableListOf<PrimaryColor>().apply {
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+        add(PrimaryColor("berryRed", berryRed, 19))
+    }
+
     val berryRed = "#b8256f"
     var red = "#db4035"
     var orange = "#ff9933"
@@ -24,7 +40,6 @@ object ColorType {
     var grey = "#b8b8b8"
     var taupe = "#ccac93"
 
-    //Добавить все существующие цвета
     fun getProjectColorType(colorId: Int?): Int {
         val color = when (colorId) {
             30 -> berryRed //berry_red -> berryRed

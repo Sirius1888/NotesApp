@@ -14,7 +14,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:title="@string/create_project" />
+        app:title="@string/create_project"
+        app:navigationIcon="@drawable/ic_toolbar_back"/>
 
     <EditText
         android:id="@+id/et_input_project_title"
