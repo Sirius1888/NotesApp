@@ -1,25 +1,20 @@
 package com.example.noteapplication.ui.task
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.noteapplication.base.BaseViewModel
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.repository.TaskRepositoryImpl
 
-class TaskListViewModel : ViewModel() {
+class TaskListViewModel(
+        private val repository: TaskRepositoryImpl
+) : BaseViewModel() {
 
-    private val repository = TaskRepositoryImpl()
-
-    val data: MutableLiveData<MutableList<Task>>?
-    val message: MutableLiveData<String>?
-
+    val data: MutableLiveData<MutableList<Task>>? = MutableLiveData()
     var project: Project? = null
 
     init {
-        data = MutableLiveData()
-        message = MutableLiveData()
         fetchAllProjectsTasks()
     }
 

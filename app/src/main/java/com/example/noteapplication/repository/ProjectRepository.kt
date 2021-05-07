@@ -2,6 +2,8 @@ package com.example.noteapplication.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.noteapplication.data.model.Project
+import com.example.noteapplication.data.network.ProjectApi
+import com.example.noteapplication.data.network.ResponseResult
 import com.example.noteapplication.data.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -9,42 +11,43 @@ import retrofit2.Response
 
 
 interface ProjectRepository {
-    fun fetchProjects()
-    fun createProject(name: String)
+    fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>>
+    fun createProject(name: String): MutableLiveData<ResponseResult<Project>>
 }
 
-class ProjectRepositorImpl : ProjectRepository {
+class ProjectRepositorImpl(
+        private val api: ProjectApi
+) : ProjectRepository {
 
-    val api = RetrofitClient().projectApi
-    val data: MutableLiveData<MutableList<Project>>? = MutableLiveData()
-    val message: MutableLiveData<String>? = MutableLiveData()
-    val createResult: MutableLiveData<Boolean>? = MutableLiveData()
-
-    override fun fetchProjects() {
+    override fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>> {
+        val data: MutableLiveData<ResponseResult<MutableList<Project>>>
+                = MutableLiveData(ResponseResult.loading())
         api.fetchProjects().enqueue(object : Callback<MutableList<Project>> {
             override fun onFailure(call: Call<MutableList<Project>>, t: Throwable) {
-                message?.value = t.message
+                data.value = ResponseResult.error(t.message)
             }
 
             override fun onResponse(call: Call<MutableList<Project>>, response: Response<MutableList<Project>>) {
-                data?.value = response.body()
+                data.value = ResponseResult.success(response.body())
             }
         })
+        return data
     }
 
-    override fun createProject(name: String) {
+    override fun createProject(name: String): MutableLiveData<ResponseResult<Project>> {
         val project = Project(name = name, color = 38)
+        val data: MutableLiveData<ResponseResult<Project>>
+                = MutableLiveData(ResponseResult.loading())
         api.createProject(project).enqueue(object : Callback<Project> {
             override fun onFailure(call: Call<Project>, t: Throwable) {
-                message?.value = t.message
-                createResult?.postValue(false)
+                data.value = ResponseResult.error(t.message)
             }
 
             override fun onResponse(call: Call<Project>, response: Response<Project>) {
-                createResult?.postValue(response.body() != null)
+                data.value = ResponseResult.success(response.body())
             }
-
         })
+        return data
     }
 
 }

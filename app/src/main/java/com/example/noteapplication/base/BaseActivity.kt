@@ -4,48 +4,26 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.noteapplication.showToast
 
-interface Base {
-
-    val name: String
-    fun setupViews()
-    fun subscribeToLiveData()
-//    {
-//
-//    }
-
-    fun multiple(a: Int, b: Int): Int
-//    {
-//        return a * b
-//    }
-}
-
-class Mathi {
-
-}
-
-
-
-abstract class BaseActivity<VM : ViewModel>(
-        private val layoutId: Int,
-        private val vmClass : Class<VM>
+abstract class BaseActivity<VM : BaseViewModel>(
+        private val layoutId: Int
 ) : AppCompatActivity() {
 
-    lateinit var viewModel: VM
+    abstract val viewModel: VM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        viewModel = ViewModelProvider(this).get(vmClass)
         setupViews()
         subscribeToLiveData()
+    }
+
+    private fun subscribeToMessages() {
+        viewModel.message.observeForever {
+            showToast(it)
+        }
     }
 
     abstract fun setupViews()
     abstract fun subscribeToLiveData()
 }
-
-//ademi = 78
-//timur = 57
-//kanaiym = 51
-//aziza = 60
-//akyikat = 74

@@ -1,37 +1,67 @@
 package com.example.noteapplication.ui.project
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.noteapplication.base.BaseViewModel
 import com.example.noteapplication.data.model.Project
+import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.repository.ProjectRepositorImpl
-import com.example.noteapplication.repository.ProjectRepository
 
-class ProjectViewModel : ViewModel() {
+class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewModel() {
 
-    private val repository = ProjectRepositorImpl()
     var project = mutableListOf<Project>()
-    val data: MutableLiveData<MutableList<Project>>?
-    val message: MutableLiveData<String>?
+    val data = MutableLiveData<MutableList<Project>>()
 
     init {
-        data = MutableLiveData()
-        message = MutableLiveData()
-        subscribeToData()
-        subscribeToMessage()
-        repository.fetchProjects()
-    }
-
-    private fun subscribeToData() {
-        repository.data?.observeForever {
-            project = it
-            data?.value = it
+        repository.fetchProjects().observeForever {
+            when (it.status) {
+                ResponseResultStatus.ERROR -> {
+                    message.value = it.message
+                    loading.value = false
+                }
+                ResponseResultStatus.SUCCESS -> {
+                    data.value = it.result
+                    loading.value = false
+                }
+                ResponseResultStatus.LOADING -> loading.value = true
+            }
         }
     }
 
-    private fun subscribeToMessage() {
-        repository.message?.observeForever {
-            message?.value = it
-        }
+}
+
+fun main() {
+    val car = Car(Engine(Gazoline()), Body(), Driver(License(19, "KG")))
+}
+
+class Car(engine: Engine, body: Body, driver: Driver) {
+
+}
+
+class Body() {
+
+}
+
+class Driver(license: License) {
+
+    fun getClassOfLicense() {
+
     }
+}
+
+class License(age: Int, gos: String)
+
+class Engine(fuel: Fuel) {
+
+}
+
+open class Fuel() {
+
+}
+
+class Gazoline() : Fuel() {
+
+}
+
+class Electrosity : Fuel() {
+
 }

@@ -2,38 +2,27 @@ package com.example.noteapplication.ui.create_project
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.noteapplication.base.BaseViewModel
+import com.example.noteapplication.data.network.ResponseResultStatus
+import com.example.noteapplication.data.network.ResponseResultStatus.*
 import com.example.noteapplication.repository.ProjectRepositorImpl
 
-class CreateProjectViewModel : ViewModel() {
+class CreateProjectViewModel(
+        private val repository: ProjectRepositorImpl
+) : BaseViewModel() {
 
-    private val repository = ProjectRepositorImpl()
-    val createResult: MutableLiveData<Boolean>?
-    val message: MutableLiveData<String>?
-
-    init {
-        createResult = MutableLiveData()
-        message = MutableLiveData()
-        subscribeToResult()
-        subscribeToMessage()
-    }
-
-    private fun subscribeToResult() {
-        repository.createResult?.observeForever {
-            createResult?.postValue(it)
-        }
-    }
-
-    private fun subscribeToMessage() {
-        repository.message?.observeForever {
-            message?.value = it
-        }
-    }
+    val createResult = MutableLiveData<Boolean>()
 
     fun createProject(name: String) {
         if (name.isEmpty()) {
-            message?.postValue("Имя проекта не может быть пустым")
+            message.postValue("Имя проекта не может быть пустым")
             return
         }
-        repository.createProject(name)
+        repository.createProject(name).observeForever {
+            when(it.status) {
+                SUCCESS -> createResult.value = it.result != null
+                ERROR -> message.value = it.message
+            }
+        }
     }
 }

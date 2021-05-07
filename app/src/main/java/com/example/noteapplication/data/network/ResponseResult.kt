@@ -9,7 +9,8 @@ enum class ResponseResultStatus {
 data class ResponseResult<T>(
         var status: ResponseResultStatus? = null,
         var result: T? = null,
-        var message: String? = null
+        var message: String? = null,
+        var code: Int? = null
 ) {
     companion object {
         fun <T> success(data: T?): ResponseResult<T> {

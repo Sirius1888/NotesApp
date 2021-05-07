@@ -8,15 +8,18 @@ import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.ui.create_project.CreateProjectActivity
+import com.example.noteapplication.ui.create_project.CreateProjectViewModel
 import com.example.noteapplication.ui.task.TaskListActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.java.KoinJavaComponent.inject
 
 class ProjectActivity : BaseActivity<ProjectViewModel>(
-        R.layout.activity_main,
-        ProjectViewModel::class.java
+        R.layout.activity_main
+//        ProjectViewModel::class.java
 ), ProjectAdapter.ClickListener {
 
     lateinit var adapter: ProjectAdapter
+    override val viewModel by inject<ProjectViewModel>(ProjectViewModel::class.java)
 
     override fun setupViews() {
         setupRecyclerView()

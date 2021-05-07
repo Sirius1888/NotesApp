@@ -5,6 +5,7 @@ import com.example.noteapplication.data.model.Task
 import com.example.noteapplication.data.network.ResponseResult
 import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.data.network.RetrofitClient
+import com.example.noteapplication.data.network.TaskApi
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,10 +17,10 @@ interface TaskRepository {
     fun deleteTask(id: Long?)
 }
 
-class TaskRepositoryImpl : TaskRepository {
+class TaskRepositoryImpl(
+        private val api: TaskApi
+) : TaskRepository {
 
-    val api = RetrofitClient().tasksApi
-    
     override fun fetchAllProjectsTasks(id: Long?): MutableLiveData<ResponseResult<MutableList<Task>>> {
         val data: MutableLiveData<ResponseResult<MutableList<Task>>> = MutableLiveData(ResponseResult.loading())
         api.fetchTasks(id).enqueue(object : Callback<MutableList<Task>> {

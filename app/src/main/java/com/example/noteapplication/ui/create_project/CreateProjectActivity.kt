@@ -10,11 +10,11 @@ import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.showToast
 import kotlinx.android.synthetic.main.activity_create_project.*
+import org.koin.java.KoinJavaComponent.inject
 
 class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
-        R.layout.activity_create_project,
-        CreateProjectViewModel::class.java
-) {
+        R.layout.activity_create_project) {
+    override val viewModel by inject<CreateProjectViewModel>(CreateProjectViewModel::class.java)
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_create_project, menu)
@@ -60,10 +60,6 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
                 showToast("Проект успешно создан")
                 finish()
             }
-        })
-
-        viewModel.message?.observe(this, Observer {
-            showToast(it)
         })
     }
 
