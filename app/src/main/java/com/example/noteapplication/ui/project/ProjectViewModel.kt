@@ -11,7 +11,7 @@ class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewM
     var project = mutableListOf<Project>()
     val data = MutableLiveData<MutableList<Project>>()
 
-    init {
+    fun fetchProjects() {
         repository.fetchProjects().observeForever {
             when (it.status) {
                 ResponseResultStatus.ERROR -> {
@@ -25,6 +25,26 @@ class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewM
                 ResponseResultStatus.LOADING -> loading.value = true
             }
         }
+    }
+
+    fun deleteProject(id: Long?) {
+        repository.deleteProject(id).observeForever {
+            when (it.status) {
+                ResponseResultStatus.ERROR -> {
+                    message.value = it.message
+                    loading.value = false
+                }
+                ResponseResultStatus.SUCCESS -> {
+                    handleResult(it.result)
+                    loading.value = false
+                }
+                ResponseResultStatus.LOADING -> loading.value = true
+            }
+        }
+    }
+
+    private fun handleResult(code: Int?) {
+        if (code == 204) message.value = "Проект успешно удален"
     }
 
 }

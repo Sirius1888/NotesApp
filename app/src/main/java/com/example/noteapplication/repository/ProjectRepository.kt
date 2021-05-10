@@ -1,12 +1,9 @@
 package com.example.noteapplication.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.noteapplication.data.local.SharedPreference
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.ProjectApi
 import com.example.noteapplication.data.network.ResponseResult
-import com.example.noteapplication.data.network.RetrofitClient
-import com.example.noteapplication.di.SharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,6 +12,7 @@ import retrofit2.Response
 interface ProjectRepository {
     fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>>
     fun createProject(name: String): MutableLiveData<ResponseResult<Project>>
+    fun deleteProject(id: Long?): MutableLiveData<ResponseResult<Int>>
 }
 
 class ProjectRepositorImpl(
@@ -31,6 +29,21 @@ class ProjectRepositorImpl(
 
             override fun onResponse(call: Call<MutableList<Project>>, response: Response<MutableList<Project>>) {
                 data.value = ResponseResult.success(response.body())
+            }
+        })
+        return data
+    }
+
+    override fun deleteProject(id: Long?): MutableLiveData<ResponseResult<Int>> {
+        val data: MutableLiveData<ResponseResult<Int>>
+                = MutableLiveData(ResponseResult.loading())
+        api.deleteProject(id).enqueue(object : Callback<Int> {
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                data.value = ResponseResult.error(t.message)
+            }
+
+            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                if (response.isSuccessful) data.value = ResponseResult.success(response.code())
             }
         })
         return data
