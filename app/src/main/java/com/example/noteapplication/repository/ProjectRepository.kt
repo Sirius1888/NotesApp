@@ -1,10 +1,12 @@
 package com.example.noteapplication.repository
 
 import androidx.lifecycle.MutableLiveData
+import com.example.noteapplication.data.local.SharedPreference
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.ProjectApi
 import com.example.noteapplication.data.network.ResponseResult
 import com.example.noteapplication.data.network.RetrofitClient
+import com.example.noteapplication.di.SharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

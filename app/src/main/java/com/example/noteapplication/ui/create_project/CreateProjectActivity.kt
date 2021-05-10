@@ -1,8 +1,8 @@
 package com.example.noteapplication.ui.create_project
 
-import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Observer
@@ -10,11 +10,11 @@ import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.showToast
 import kotlinx.android.synthetic.main.activity_create_project.*
-import org.koin.java.KoinJavaComponent.inject
 
 class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
-        R.layout.activity_create_project) {
-    override val viewModel by inject<CreateProjectViewModel>(CreateProjectViewModel::class.java)
+        R.layout.activity_create_project,
+        CreateProjectViewModel::class
+) {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_create_project, menu)
@@ -55,7 +55,7 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     }
 
     override fun subscribeToLiveData() {
-        viewModel.createResult?.observe(this, Observer {
+        viewModel.createResult.observe(this, Observer {
             if (it == true) {
                 showToast("Проект успешно создан")
                 finish()

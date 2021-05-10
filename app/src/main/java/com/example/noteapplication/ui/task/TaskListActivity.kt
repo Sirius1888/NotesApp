@@ -7,22 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
+import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 import kotlinx.android.synthetic.main.activity_task_list.*
 import org.koin.java.KoinJavaComponent.inject
 
-class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
+class TaskListActivity : BaseActivity<TaskListViewModel>(
+        R.layout.activity_task_list,
+        TaskListViewModel::class
+), TaskAdapter.ClickListener {
 
-    val viewModel by inject<TaskListViewModel>(TaskListViewModel::class.java)
 
     private lateinit var adapter: TaskAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_list)
+
+    override fun setupViews() {
         getIntentData()
         setupRecyclerView()
-        subscribeToLiveData()
     }
 
     private fun getIntentData() {
@@ -35,7 +36,11 @@ class TaskListActivity : AppCompatActivity(), TaskAdapter.ClickListener {
         recycler_view.adapter = adapter
     }
 
-    private fun subscribeToLiveData() {
+    override fun subscribeToLiveData() {
+        subscribeToData()
+    }
+
+    private fun subscribeToData() {
         viewModel.data?.observe(this, Observer {
             adapter.addItems(it)
         })

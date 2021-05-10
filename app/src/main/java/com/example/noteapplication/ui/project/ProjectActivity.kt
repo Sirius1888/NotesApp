@@ -14,12 +14,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.java.KoinJavaComponent.inject
 
 class ProjectActivity : BaseActivity<ProjectViewModel>(
-        R.layout.activity_main
-//        ProjectViewModel::class.java
+        R.layout.activity_main,
+        ProjectViewModel::class
 ), ProjectAdapter.ClickListener {
 
     lateinit var adapter: ProjectAdapter
-    override val viewModel by inject<ProjectViewModel>(ProjectViewModel::class.java)
 
     override fun setupViews() {
         setupRecyclerView()
@@ -64,7 +63,7 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     override fun subscribeToLiveData() {
-        viewModel.data?.observe(this, Observer {
+        viewModel.data.observe(this, Observer {
             adapter.addItems(it)
         })
     }
