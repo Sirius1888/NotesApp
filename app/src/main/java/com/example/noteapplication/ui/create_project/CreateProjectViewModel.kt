@@ -13,12 +13,16 @@ class CreateProjectViewModel(
 
     val createResult = MutableLiveData<Boolean>()
 
-    fun createProject(name: String) {
+    fun createProject(name: String, color: Int?) {
         if (name.isEmpty()) {
             message.postValue("Имя проекта не может быть пустым")
             return
         }
-        repository.createProject(name).observeForever {
+        if (color == null) {
+            message.postValue("Цвет проекта не выбран")
+            return
+        }
+        repository.createProject(name, color).observeForever {
             when(it.status) {
                 SUCCESS -> createResult.value = it.result != null
                 ERROR -> message.value = it.message

@@ -11,7 +11,7 @@ import retrofit2.Response
 
 interface ProjectRepository {
     fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>>
-    fun createProject(name: String): MutableLiveData<ResponseResult<Project>>
+    fun createProject(name: String, color: Int?): MutableLiveData<ResponseResult<Project>>
     fun deleteProject(id: Long?): MutableLiveData<ResponseResult<Int>>
 }
 
@@ -49,8 +49,8 @@ class ProjectRepositorImpl(
         return data
     }
 
-    override fun createProject(name: String): MutableLiveData<ResponseResult<Project>> {
-        val project = Project(name = name, color = 38)
+    override fun createProject(name: String, color: Int?): MutableLiveData<ResponseResult<Project>> {
+        val project = Project(name = name, color = color)
         val data: MutableLiveData<ResponseResult<Project>>
                 = MutableLiveData(ResponseResult.loading())
         api.createProject(project).enqueue(object : Callback<Project> {

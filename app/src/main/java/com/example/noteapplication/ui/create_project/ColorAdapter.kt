@@ -1,5 +1,8 @@
 package com.example.noteapplication.ui.create_project
 
+
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +10,9 @@ import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseAdapter
 import com.example.noteapplication.base.BaseViewHolder
 import com.example.noteapplication.data.model.PrimaryColor
+import com.example.noteapplication.gone
+import com.example.noteapplication.visible
+import kotlinx.android.synthetic.main.item_color.view.*
 
 class ColorAdapter(private var listener: ClickListener) : BaseAdapter() {
 
@@ -20,12 +26,19 @@ class ColorAdapter(private var listener: ClickListener) : BaseAdapter() {
         return items.count()
     }
 
+//    var prevSelected: Int? = null
+
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item = items[position]
         val holder = holder as ColorViewHolder
         holder.bind(item)
         holder.itemView.setOnClickListener {
-            listener.onItemClick(item)
+            listener.onItemClick(item, position)
+//            items.forEach { it.isSelected = false }
+//            items[position].isSelected = true
+//            notifyItemChanged(position)
+//            prevSelected?.let { notifyItemChanged(it) }
+//            prevSelected = position
         }
     }
 
@@ -35,12 +48,14 @@ class ColorAdapter(private var listener: ClickListener) : BaseAdapter() {
     }
 
     interface ClickListener {
-        fun onItemClick(item: PrimaryColor)
+        fun onItemClick(item: PrimaryColor, position: Int)
     }
 }
 
 class ColorViewHolder(itemView: View) : BaseViewHolder(itemView) {
     fun bind(item: PrimaryColor) {
-
+        if (item.isSelected) itemView.selected_color_view.visible()
+        else itemView.selected_color_view.gone()
+        itemView.color_view.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
     }
 }

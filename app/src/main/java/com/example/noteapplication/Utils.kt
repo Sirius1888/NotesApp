@@ -11,7 +11,11 @@ fun Context.showToast(message: String?) {
 }
 
 fun View.visible() {
+    this.visibility = View.VISIBLE
+}
 
+fun View.gone() {
+    this.visibility = View.GONE
 }
 
 
