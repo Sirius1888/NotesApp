@@ -24,9 +24,14 @@ class CreateProjectViewModel(
         }
         repository.createProject(name, color).observeForever {
             when(it.status) {
-                SUCCESS -> createResult.value = it.result != null
+                SUCCESS -> {
+                    createResult.value = it.result != null
+                    if (it.result != null) message.value = "Проект успешно создан"
+                    else message.value = "Ошибка при создании проекта"
+                }
                 ERROR -> message.value = it.message
             }
         }
     }
+
 }

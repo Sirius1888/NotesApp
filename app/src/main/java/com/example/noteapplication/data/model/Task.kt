@@ -13,7 +13,7 @@ data class Task (
     val content: String? = null,
     val completed: Boolean? = false,
     @SerializedName("label_ids")
-    val labelIds: MutableList<Int>,
+    val labelIds: MutableList<Int>? = null,
     val priority: Int? = null,
     @SerializedName("comment_count")
     val commentCount: Int? = null,

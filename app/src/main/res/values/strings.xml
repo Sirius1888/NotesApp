@@ -2,7 +2,8 @@
     <string name="app_name">Note application</string>
     <string name="create_project">Create project</string>
     <string name="create">Create</string>
-    <string name="input_create_project">Add a projec title</string>
+    <string name="input_create_project">Add a project title</string>
+    <string name="input_create_note">Add a note title</string>
     <string name="select_color">Select color</string>
     <string name="colors">Colors</string>
 </resources>

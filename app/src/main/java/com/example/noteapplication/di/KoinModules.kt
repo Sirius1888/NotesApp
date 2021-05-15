@@ -5,14 +5,14 @@ import com.example.noteapplication.repository.ProjectRepositorImpl
 import com.example.noteapplication.repository.TaskRepositoryImpl
 import com.example.noteapplication.ui.create_project.CreateProjectViewModel
 import com.example.noteapplication.ui.project.ProjectViewModel
-import com.example.noteapplication.ui.task.TaskListViewModel
+import com.example.noteapplication.ui.task.NotesListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { CreateProjectViewModel(get()) }
     viewModel { ProjectViewModel(get()) }
-    viewModel { TaskListViewModel(get()) }
+    viewModel { NotesListViewModel(get()) }
 }
 
 val repositoryModule = module {

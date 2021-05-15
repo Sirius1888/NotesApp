@@ -27,27 +27,30 @@ enum class Colors(val colorName: String, val hex: String, val id: Int){
 }
 
 object ColorType {
-    val colors = mutableListOf<PrimaryColor>().apply {
-        add(PrimaryColor(Colors.BERRY_RED.colorName, Colors.BERRY_RED.hex, Colors.BERRY_RED.id))
-        add(PrimaryColor(Colors.RED.colorName,Colors.RED.hex, Colors.RED.id))
-        add(PrimaryColor(Colors.ORANGE.colorName,Colors.ORANGE.hex, Colors.ORANGE.id))
-        add(PrimaryColor(Colors.YELLOW.colorName,Colors.YELLOW.hex, Colors.YELLOW.id))
-        add(PrimaryColor(Colors.OLIVE_GREEN.colorName,Colors.OLIVE_GREEN.hex, Colors.OLIVE_GREEN.id))
-        add(PrimaryColor(Colors.LIME_GREEN.colorName,Colors.LIME_GREEN.hex, Colors.LIME_GREEN.id))
-        add(PrimaryColor(Colors.GREEN.colorName,Colors.GREEN.hex, Colors.GREEN.id))
-        add(PrimaryColor(Colors.MINT_GREEN.colorName,Colors.MINT_GREEN.hex, Colors.MINT_GREEN.id))
-        add(PrimaryColor(Colors.TEAL.colorName,Colors.TEAL.hex, Colors.TEAL.id))
-        add(PrimaryColor(Colors.SKY_BLUE.colorName,Colors.SKY_BLUE.hex, Colors.SKY_BLUE.id))
-        add(PrimaryColor(Colors.LIGHT_BLUE.colorName,Colors.LIGHT_BLUE.hex, Colors.LIGHT_BLUE.id))
-        add(PrimaryColor(Colors.BLUE.colorName,Colors.BLUE.hex, Colors.BLUE.id))
-        add(PrimaryColor(Colors.GRAPE.colorName,Colors.GRAPE.hex, Colors.GRAPE.id))
-        add(PrimaryColor(Colors.VIOLET.colorName,Colors.VIOLET.hex, Colors.VIOLET.id))
-        add(PrimaryColor(Colors.LAVENDER.colorName,Colors.LAVENDER.hex, Colors.LAVENDER.id))
-        add(PrimaryColor(Colors.MAGENTA.colorName,Colors.MAGENTA.hex, Colors.MAGENTA.id))
-        add(PrimaryColor(Colors.SALMON.colorName,Colors.SALMON.hex, Colors.SALMON.id))
-        add(PrimaryColor(Colors.CHARCOAL.colorName,Colors.CHARCOAL.hex, Colors.CHARCOAL.id))
-        add(PrimaryColor(Colors.GREY.colorName,Colors.GREY.hex, Colors.GREY.id))
-        add(PrimaryColor(Colors.TAUPE.colorName,Colors.TAUPE.hex, Colors.TAUPE.id))
+
+    fun getNotesPallette(): MutableList<PrimaryColor> {
+        return mutableListOf<PrimaryColor>().apply {
+            add(PrimaryColor(Colors.BERRY_RED.colorName, Colors.BERRY_RED.hex, Colors.BERRY_RED.id))
+            add(PrimaryColor(Colors.RED.colorName, Colors.RED.hex, Colors.RED.id))
+            add(PrimaryColor(Colors.ORANGE.colorName, Colors.ORANGE.hex, Colors.ORANGE.id))
+            add(PrimaryColor(Colors.YELLOW.colorName, Colors.YELLOW.hex, Colors.YELLOW.id))
+            add(PrimaryColor(Colors.OLIVE_GREEN.colorName, Colors.OLIVE_GREEN.hex, Colors.OLIVE_GREEN.id))
+            add(PrimaryColor(Colors.LIME_GREEN.colorName, Colors.LIME_GREEN.hex, Colors.LIME_GREEN.id))
+            add(PrimaryColor(Colors.GREEN.colorName, Colors.GREEN.hex, Colors.GREEN.id))
+            add(PrimaryColor(Colors.MINT_GREEN.colorName, Colors.MINT_GREEN.hex, Colors.MINT_GREEN.id))
+            add(PrimaryColor(Colors.TEAL.colorName, Colors.TEAL.hex, Colors.TEAL.id))
+            add(PrimaryColor(Colors.SKY_BLUE.colorName, Colors.SKY_BLUE.hex, Colors.SKY_BLUE.id))
+            add(PrimaryColor(Colors.LIGHT_BLUE.colorName, Colors.LIGHT_BLUE.hex, Colors.LIGHT_BLUE.id))
+            add(PrimaryColor(Colors.BLUE.colorName, Colors.BLUE.hex, Colors.BLUE.id))
+            add(PrimaryColor(Colors.GRAPE.colorName, Colors.GRAPE.hex, Colors.GRAPE.id))
+            add(PrimaryColor(Colors.VIOLET.colorName, Colors.VIOLET.hex, Colors.VIOLET.id))
+            add(PrimaryColor(Colors.LAVENDER.colorName, Colors.LAVENDER.hex, Colors.LAVENDER.id))
+            add(PrimaryColor(Colors.MAGENTA.colorName, Colors.MAGENTA.hex, Colors.MAGENTA.id))
+            add(PrimaryColor(Colors.SALMON.colorName, Colors.SALMON.hex, Colors.SALMON.id))
+            add(PrimaryColor(Colors.CHARCOAL.colorName, Colors.CHARCOAL.hex, Colors.CHARCOAL.id))
+            add(PrimaryColor(Colors.GREY.colorName, Colors.GREY.hex, Colors.GREY.id))
+            add(PrimaryColor(Colors.TAUPE.colorName, Colors.TAUPE.hex, Colors.TAUPE.id))
+        }
     }
 
     fun getProjectColorType(colorId: Int?): Int {

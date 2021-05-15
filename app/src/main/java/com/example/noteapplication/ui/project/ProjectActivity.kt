@@ -11,10 +11,9 @@ import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.base.ItemSimpleTouch
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.ui.create_project.CreateProjectActivity
-import com.example.noteapplication.ui.create_project.CreateProjectViewModel
-import com.example.noteapplication.ui.task.TaskListActivity
+import com.example.noteapplication.ui.task.NotesListActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.java.KoinJavaComponent.inject
+import kotlinx.android.synthetic.main.view_bottom_tab.*
 
 class ProjectActivity : BaseActivity<ProjectViewModel>(
         R.layout.activity_main,
@@ -93,6 +92,6 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     override fun onItemClick(item: Project) {
-        TaskListActivity.instance(this, item)
+        NotesListActivity.instance(this, item)
     }
 }

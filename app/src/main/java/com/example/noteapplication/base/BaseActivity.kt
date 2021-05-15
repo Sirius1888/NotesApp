@@ -19,6 +19,7 @@ abstract class BaseActivity<VM : BaseViewModel>(
         viewModel = getViewModel(clazz = clazz)
         setupViews()
         subscribeToLiveData()
+        subscribeToMessages()
     }
 
     private fun subscribeToMessages() {

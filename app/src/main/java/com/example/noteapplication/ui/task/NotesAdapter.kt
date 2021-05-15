@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapplication.R
 import com.example.noteapplication.data.model.Task
-import kotlinx.android.synthetic.main.item_task.view.*
+import kotlinx.android.synthetic.main.item_note.view.*
 
 class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<TasksViewHolder>() {
 
     private var items = mutableListOf<Task>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
-        return TasksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false))
+        return TasksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false))
     }
 
     override fun getItemCount(): Int {

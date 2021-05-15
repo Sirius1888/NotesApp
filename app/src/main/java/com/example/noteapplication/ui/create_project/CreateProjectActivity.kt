@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_create_project.*
 class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
         R.layout.activity_create_project,
         CreateProjectViewModel::class
-), PickerColor {
+), PickerColorListener {
 
     var selectedColor: PrimaryColor? = null
 
@@ -55,7 +55,7 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     private fun setupColorPicker() {
         btn_select_color.setOnClickListener {
             val bottomSheetDialogFragment: BottomSheetDialogFragment =
-                ColorPickerBottomSheetDialogFragment(this)
+                ColorPickerBottomSheetDialogFragment()
             bottomSheetDialogFragment.isCancelable = true
             bottomSheetDialogFragment.show(
                 supportFragmentManager,
@@ -66,10 +66,7 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
 
     override fun subscribeToLiveData() {
         viewModel.createResult.observe(this, Observer {
-            if (it == true) {
-                showToast("Проект успешно создан")
-                finish()
-            }
+            if (it == true) finish()
         })
     }
 
@@ -81,11 +78,11 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     }
 
     override fun choosedColor(colors: MutableList<PrimaryColor>) {
-        colors.forEach { if (it.isSelected) setupSelectecViews(it) }
+        colors.forEach { if (it.isSelected) setupSelectedViews(it) }
     }
 
-    private fun setupSelectecViews(item: PrimaryColor) {
-        selectedColor = selectedColor
+    private fun setupSelectedViews(item: PrimaryColor) {
+        selectedColor = item
         color_view.visible()
         color_view.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
         btn_select_color.text = "Change color"
