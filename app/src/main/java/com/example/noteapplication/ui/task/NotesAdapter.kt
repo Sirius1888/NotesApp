@@ -27,7 +27,7 @@ class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<Ta
             listener.onItemClick(item)
         }
         holder.itemView.cb_task.setOnClickListener {
-            listener.onCheckedClick(item)
+            listener.onCheckedClick(item, position)
         }
         holder.itemView.setOnLongClickListener {
             listener.onRemoveItemClick(item, position)
@@ -35,14 +35,20 @@ class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<Ta
         }
     }
 
-    fun addItems(data: MutableList<Task>) {
-        items = data
-        notifyDataSetChanged()
+    fun addItems(data: MutableList<Task>?) {
+        data?.let {
+            items = it
+            notifyDataSetChanged()
+        }
+    }
+
+    fun refreshItems(position: Int) {
+
     }
 
     interface ClickListener {
         fun onItemClick(item: Task)
-        fun onCheckedClick(item: Task)
+        fun onCheckedClick(item: Task, position: Int)
         fun onRemoveItemClick(item: Task, position: Int)
     }
 

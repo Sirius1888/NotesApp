@@ -14,7 +14,7 @@ import retrofit2.Response
 interface TaskRepository {
     fun fetchAllProjectsTasks(id: Long?): MutableLiveData<ResponseResult<MutableList<Task>>>
     fun createNote(dto: Task): MutableLiveData<ResponseResult<Task>>
-    fun changeStateOfTask(id: Long?)
+    fun closeNote(id: Long?): MutableLiveData<ResponseResult<Boolean>>
     fun deleteTask(id: Long?)
 }
 
@@ -24,7 +24,7 @@ class TaskRepositoryImpl(
 
     override fun fetchAllProjectsTasks(id: Long?): MutableLiveData<ResponseResult<MutableList<Task>>> {
         val data: MutableLiveData<ResponseResult<MutableList<Task>>> = MutableLiveData(ResponseResult.loading())
-        api.fetchTasks(id).enqueue(object : Callback<MutableList<Task>> {
+        api.fetchTasks(id, "посмотреть все").enqueue(object : Callback<MutableList<Task>> {
             
             override fun onFailure(call: Call<MutableList<Task>>, t: Throwable) {
                 data.value = ResponseResult.error(t.message)
@@ -55,17 +55,19 @@ class TaskRepositoryImpl(
         return data
     }
 
-    override fun changeStateOfTask(id: Long?) {
+    override fun closeNote(id: Long?): MutableLiveData<ResponseResult<Boolean>> {
+        val data = MutableLiveData<ResponseResult<Boolean>>(ResponseResult.loading())
         api.changeStateOfTask(id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                callback.onFailure(t.message)
+                data.value = ResponseResult.error(t.message)
             }
 
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-//                if (response.isSuccessful) callback.onSuccess("changed state of task")
-//                else callback.onFailure(response.message())
+                data.value = if (response.isSuccessful) ResponseResult.success(true)
+                            else ResponseResult.error(response.message())
             }
         })
+        return data
     }
 
     override fun deleteTask(id: Long?) {

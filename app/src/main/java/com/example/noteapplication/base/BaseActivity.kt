@@ -2,11 +2,12 @@ package com.example.noteapplication.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import com.example.noteapplication.showToast
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
-abstract class BaseActivity<VM : BaseViewModel>(
+abstract class BaseActivity<VM : ViewModel>(
         private val layoutId: Int,
         private val clazz: KClass<VM>
 ) : AppCompatActivity() {
@@ -23,9 +24,9 @@ abstract class BaseActivity<VM : BaseViewModel>(
     }
 
     private fun subscribeToMessages() {
-        viewModel.message.observeForever {
-            showToast(it)
-        }
+//        viewModel.message.observeForever {
+//            showToast(it)
+//        }
     }
 
     abstract fun setupViews()

@@ -14,7 +14,7 @@ interface TaskApi {
         "client_secret: 324fa28e17164dc8b799b373f3480806"
     )
     @GET("tasks")
-    fun fetchTasks(@Query("project_id") id: Long?): Call<MutableList<Task>>
+    fun fetchTasks(@Query("project_id") id: Long?, @Query("filter") filter: String): Call<MutableList<Task>>
 
     @Headers(
             "Authorization: Bearer 18d41187422aa8a8949e8a12f437b961c34b0dce",
@@ -22,7 +22,7 @@ interface TaskApi {
             "client_secret: 324fa28e17164dc8b799b373f3480806"
     )
 
-    @POST("tasks/{f}/close")
+    @POST("tasks/{id}/close")
     fun changeStateOfTask(@Path("id")id: Long?) : Call<Unit>
 
     @Headers(

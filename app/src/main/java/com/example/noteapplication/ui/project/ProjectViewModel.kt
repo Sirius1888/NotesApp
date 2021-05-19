@@ -1,12 +1,13 @@
 package com.example.noteapplication.ui.project
 
 import androidx.lifecycle.MutableLiveData
+import com.example.noteapplication.base.BaseEvent
 import com.example.noteapplication.base.BaseViewModel
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.repository.ProjectRepositorImpl
 
-class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewModel() {
+class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewModel<BaseEvent>() {
 
     var project = mutableListOf<Project>()
     val data = MutableLiveData<MutableList<Project>>()

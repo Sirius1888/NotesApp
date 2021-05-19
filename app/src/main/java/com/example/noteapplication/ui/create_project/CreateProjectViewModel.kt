@@ -2,6 +2,7 @@ package com.example.noteapplication.ui.create_project
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.noteapplication.base.BaseEvent
 import com.example.noteapplication.base.BaseViewModel
 import com.example.noteapplication.data.network.ResponseResultStatus
 import com.example.noteapplication.data.network.ResponseResultStatus.*
@@ -9,7 +10,7 @@ import com.example.noteapplication.repository.ProjectRepositorImpl
 
 class CreateProjectViewModel(
         private val repository: ProjectRepositorImpl
-) : BaseViewModel() {
+) : BaseViewModel<BaseEvent>() {
 
     val createResult = MutableLiveData<Boolean>()
 

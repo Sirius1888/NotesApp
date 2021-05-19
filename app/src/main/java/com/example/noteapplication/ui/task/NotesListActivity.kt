@@ -10,10 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
+import com.example.noteapplication.base.BaseEvent
+import com.example.noteapplication.base.NoteEvent
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 import kotlinx.android.synthetic.main.activity_notes_list.*
 import kotlinx.android.synthetic.main.view_bottom_tab.*
+
 
 class NotesListActivity : BaseActivity<NotesListViewModel>(
         R.layout.activity_notes_list,
@@ -41,29 +44,29 @@ class NotesListActivity : BaseActivity<NotesListViewModel>(
 
     override fun subscribeToLiveData() {
         subscribeToData()
-        subscribeToCreatingNote()
     }
 
     private fun subscribeToData() {
-        viewModel.data?.observe(this, Observer {
-            adapter.addItems(it)
+        viewModel.event.observe(this, Observer {
+            when (it) {
+                is NoteEvent.NoteFetched -> adapter.addItems(it.array)
+                is NoteEvent.NoteClosed -> adapter.refreshItems(closedPosition)
+                is NoteEvent.NoteCreated ->  {
+                    dialog.dismiss()
+                    viewModel.fetchAllProjectsTasks()
+                }
+            }
         })
     }
-
-    private fun subscribeToCreatingNote() {
-        viewModel.noteCreating.observe(this, Observer {
-            dialog.dismiss()
-            if (it) viewModel.fetchAllProjectsTasks()
-        })
-    }
-
 
     override fun onItemClick(item: Task) {
 
     }
 
-    override fun onCheckedClick(item: Task) {
-//        repository.changeStateOfTask(item.id)
+    var closedPosition: Int = 0
+    override fun onCheckedClick(item: Task, position: Int) {
+        viewModel.closeNote(item.id)
+        closedPosition = position
     }
 
     override fun onRemoveItemClick(item: Task, position: Int) {
