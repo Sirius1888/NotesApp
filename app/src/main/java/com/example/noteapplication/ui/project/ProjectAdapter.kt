@@ -1,5 +1,7 @@
 package com.example.noteapplication.ui.project
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import com.example.noteapplication.ColorType.getProjectColorType
 import com.example.noteapplication.base.BaseAdapter
 import com.example.noteapplication.base.BaseViewHolder
 import com.example.noteapplication.data.model.Project
+import kotlinx.android.synthetic.main.item_color.view.*
 import kotlinx.android.synthetic.main.item_project.view.*
 
 class ProjectAdapter(private var listener: ClickListener) : BaseAdapter() {

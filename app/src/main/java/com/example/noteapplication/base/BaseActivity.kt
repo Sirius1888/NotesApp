@@ -32,23 +32,3 @@ abstract class BaseActivity<VM : ViewModel>(
     abstract fun setupViews()
     abstract fun subscribeToLiveData()
 }
-
-fun main() {
-   val a = A(B(C()), D())
-}
-
-class A(b: B, d: D) {
-
-}
-
-class B(c: C) {
-
-}
-
-class C {
-
-}
-
-class D {
-
-}

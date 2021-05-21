@@ -1,5 +1,6 @@
 package com.example.noteapplication.base
 
+import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 
 
@@ -20,6 +21,6 @@ sealed class CreatedProjectEvent : BaseEvent() {
 }
 
 sealed class ProjectEvent : BaseEvent() {
-
+    class ProjectFetched(val array: MutableList<Project>?) : ProjectEvent()
 }
 

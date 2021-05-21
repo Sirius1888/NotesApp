@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.base.ItemSimpleTouch
+import com.example.noteapplication.base.ProjectEvent
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.ui.create_project.CreateProjectActivity
 import com.example.noteapplication.ui.task.NotesListActivity
@@ -22,15 +23,11 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
 
     lateinit var adapter: ProjectAdapter
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchProjects()
-    }
-
     override fun setupViews() {
         setupRecyclerView()
         deleteSwipeAction()
         setupSearchView()
+        setupSwipeRefresh()
         addAction()
     }
 
@@ -40,13 +37,11 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
         recycler_view.adapter = adapter
     }
 
-
     private fun deleteSwipeAction() {
         val swipeHandler = object : ItemSimpleTouch(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val item = viewModel.data.value?.get(position)
-//                adapter.deleteItem(position)
+                val item = viewModel.project?.get(position)
                 viewModel.deleteProject(item?.id)
 
             }
@@ -64,12 +59,11 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
             override fun onQueryTextChange(newText: String): Boolean {
                 Handler().postDelayed(Runnable {
                     if (newText == "") {
-                        adapter.addItems(viewModel.project)
+                        viewModel.fetchProjects()
                     } else {
-
                         val searchText = newText.toLowerCase()
                         val filtered = mutableListOf<Project>()
-                        viewModel.project.forEach { if (it.name?.toLowerCase()?.contains(searchText)!!) filtered.add(it) }
+                        viewModel.project?.forEach { if (it.name?.toLowerCase()?.contains(searchText)!!) filtered.add(it) }
                         adapter.addItems(filtered)
 
                     }
@@ -79,6 +73,15 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
         })
     }
 
+    private fun setupSwipeRefresh() {
+        swipe_refresh_layout.setOnRefreshListener {
+            viewModel.fetchProjects()
+        }
+
+        swipe_refresh_layout.setColorSchemeResources(
+            android.R.color.holo_red_light)
+    }
+
     private fun addAction() {
         btn_add.setOnClickListener {
             CreateProjectActivity.instance(this)
@@ -86,8 +89,13 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     override fun subscribeToLiveData() {
-        viewModel.data.observe(this, Observer {
-            adapter.addItems(it)
+        viewModel.event.observe(this, Observer {
+            when (it) {
+                is ProjectEvent.ProjectFetched -> {
+                    swipe_refresh_layout.isRefreshing = false
+                    it.array?.let { array -> adapter.addItems(array) }
+                }
+            }
         })
     }
 

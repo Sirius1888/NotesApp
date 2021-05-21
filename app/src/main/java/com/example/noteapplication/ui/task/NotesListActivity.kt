@@ -10,13 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
-import com.example.noteapplication.base.BaseEvent
 import com.example.noteapplication.base.NoteEvent
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
 import kotlinx.android.synthetic.main.activity_notes_list.*
 import kotlinx.android.synthetic.main.view_bottom_tab.*
-
 
 class NotesListActivity : BaseActivity<NotesListViewModel>(
         R.layout.activity_notes_list,
