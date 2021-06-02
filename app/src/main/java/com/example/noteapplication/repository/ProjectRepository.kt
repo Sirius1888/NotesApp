@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.network.ProjectApi
 import com.example.noteapplication.data.network.ResponseResult
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 interface ProjectRepository {
-    fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>>
+    fun fetchProjects(): Observable<MutableList<Project>>
     fun createProject(name: String, color: Int?): MutableLiveData<ResponseResult<Project>>
     fun deleteProject(id: Long?): MutableLiveData<ResponseResult<Int>>
 }
@@ -19,19 +21,10 @@ class ProjectRepositorImpl(
         private val api: ProjectApi
 ) : ProjectRepository {
 
-    override fun fetchProjects(): MutableLiveData<ResponseResult<MutableList<Project>>> {
-        val data: MutableLiveData<ResponseResult<MutableList<Project>>>
-                = MutableLiveData(ResponseResult.loading())
-        api.fetchProjects().enqueue(object : Callback<MutableList<Project>> {
-            override fun onFailure(call: Call<MutableList<Project>>, t: Throwable) {
-                data.value = ResponseResult.error(t.message)
-            }
-
-            override fun onResponse(call: Call<MutableList<Project>>, response: Response<MutableList<Project>>) {
-                data.value = ResponseResult.success(response.body())
-            }
-        })
-        return data
+    override fun fetchProjects(): Observable<MutableList<Project>> {
+        return api.fetchProjects()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun deleteProject(id: Long?): MutableLiveData<ResponseResult<Int>> {

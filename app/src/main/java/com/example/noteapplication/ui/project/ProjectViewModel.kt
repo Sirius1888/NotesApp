@@ -1,5 +1,6 @@
 package com.example.noteapplication.ui.project
 
+import androidx.appcompat.view.SupportActionModeWrapper
 import androidx.lifecycle.MutableLiveData
 import com.example.noteapplication.base.BaseEvent
 import com.example.noteapplication.base.BaseViewModel
@@ -17,20 +18,14 @@ class ProjectViewModel(private val repository: ProjectRepositorImpl) : BaseViewM
     }
 
     fun fetchProjects() {
-        repository.fetchProjects().observeForever {
-            when (it.status) {
-                ResponseResultStatus.ERROR -> {
-                    message.value = it.message
-                    loading.value = false
-                }
-                ResponseResultStatus.SUCCESS -> {
-                    project = it.result
-                    event.value = ProjectEvent.ProjectFetched(project)
-                    loading.value = false
-                }
-                ResponseResultStatus.LOADING -> loading.value = true
-            }
-        }
+        loading.value = true
+        disposable.add(
+                repository.fetchProjects()
+                        .doOnTerminate { loading.value = false }
+                        .subscribe(
+                                { event.value = ProjectEvent.ProjectFetched(it) },
+                                { message.value = it.message })
+        )
     }
 
     fun deleteProject(id: Long?) {
@@ -59,13 +54,9 @@ fun main() {
     val car = Car(Engine(Gazoline()), Body(), Driver(License(19, "KG")))
 }
 
-class Car(engine: Engine, body: Body, driver: Driver) {
+class Car(engine: Engine, body: Body, driver: Driver)
 
-}
-
-class Body() {
-
-}
+class Body
 
 class Driver(license: License) {
 
@@ -76,18 +67,10 @@ class Driver(license: License) {
 
 class License(age: Int, gos: String)
 
-class Engine(fuel: Fuel) {
+class Engine(fuel: Fuel)
 
-}
+open class Fuel
 
-open class Fuel() {
+class Gazoline : Fuel()
 
-}
-
-class Gazoline() : Fuel() {
-
-}
-
-class Electrosity : Fuel() {
-
-}
+class Electrosity : Fuel()

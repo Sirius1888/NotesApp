@@ -52,4 +52,38 @@
         android:layout_marginTop="24dp"
         android:background="@null"/>
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_panel_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="12dp"
+        android:elevation="3dp"
+        android:background="@drawable/view_background">
+
+        <TextView
+            android:id="@+id/count_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/bottom_panel_image"
+            app:layout_constraintTop_toTopOf="@+id/bottom_panel_image"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_panel_image"
+            android:text="Выбрано 2 фотографии"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Готово"
+            app:layout_constraintEnd_toEndOf="@+id/bottom_panel_image"
+            app:layout_constraintTop_toTopOf="@+id/bottom_panel_image"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_panel_image"
+            android:layout_margin="16dp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
