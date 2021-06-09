@@ -1,29 +1,34 @@
 package com.example.noteapplication.ui.project
 
 import android.os.Handler
+import android.view.LayoutInflater
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.base.ItemSimpleTouch
 import com.example.noteapplication.base.ProjectEvent
 import com.example.noteapplication.data.model.Project
+import com.example.noteapplication.databinding.ActivityMainBinding
+import com.example.noteapplication.databinding.BottomSheetColorPickerBinding
+import com.example.noteapplication.databinding.ViewBottomTabBinding
 import com.example.noteapplication.ui.create_project.CreateProjectActivity
 import com.example.noteapplication.ui.task.NotesListActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_bottom_tab.*
 
-class ProjectActivity : BaseActivity<ProjectViewModel>(
-        R.layout.activity_main,
+
+class ProjectActivity : BaseActivity<ProjectViewModel, ActivityMainBinding>(
         ProjectViewModel::class
 ), ProjectAdapter.ClickListener {
 
+    override fun getViewBinding(): ActivityMainBinding  = ActivityMainBinding.inflate(layoutInflater)
+    private var bottomBinding: ViewBottomTabBinding? = null
     lateinit var adapter: ProjectAdapter
 
     override fun setupViews() {
+        bottomBinding =  ViewBottomTabBinding.inflate(LayoutInflater.from(this))
         setupRecyclerView()
         deleteSwipeAction()
         setupSearchView()
@@ -33,8 +38,8 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
 
     private fun setupRecyclerView() {
         adapter = ProjectAdapter(this)
-        recycler_view.layoutManager = LinearLayoutManager(this)
-        recycler_view.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 
     private fun deleteSwipeAction() {
@@ -47,11 +52,11 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(recycler_view)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun setupSearchView() {
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
@@ -74,16 +79,16 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
     }
 
     private fun setupSwipeRefresh() {
-        swipe_refresh_layout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.fetchProjects()
         }
 
-        swipe_refresh_layout.setColorSchemeResources(
+        binding.swipeRefreshLayout.setColorSchemeResources(
             android.R.color.holo_red_light)
     }
 
     private fun addAction() {
-        btn_add.setOnClickListener {
+        bottomBinding?.btnAdd?.setOnClickListener {
             CreateProjectActivity.instance(this)
         }
     }
@@ -92,7 +97,7 @@ class ProjectActivity : BaseActivity<ProjectViewModel>(
         viewModel.event.observe(this, Observer {
             when (it) {
                 is ProjectEvent.ProjectFetched -> {
-                    swipe_refresh_layout.isRefreshing = false
+                    binding.swipeRefreshLayout.isRefreshing = false
                     it.array?.let { array -> adapter.addItems(array) }
                 }
             }

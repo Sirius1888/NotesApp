@@ -11,16 +11,17 @@ import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseAdapter
 import com.example.noteapplication.base.BaseViewHolder
 import com.example.noteapplication.data.model.PrimaryColor
+import com.example.noteapplication.databinding.ItemColorBinding
 import com.example.noteapplication.gone
 import com.example.noteapplication.visible
-import kotlinx.android.synthetic.main.item_color.view.*
 
 class ColorAdapter(private var listener: ClickListener) : BaseAdapter() {
 
     private var items = mutableListOf<PrimaryColor>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return ColorViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_color, parent, false))
+        val binding = ItemColorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ColorViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -46,10 +47,10 @@ class ColorAdapter(private var listener: ClickListener) : BaseAdapter() {
     }
 }
 
-class ColorViewHolder(itemView: View) : BaseViewHolder(itemView) {
+class ColorViewHolder(val binding: ItemColorBinding) : BaseViewHolder(binding.root) {
     fun bind(item: PrimaryColor) {
-        if (item.isSelected) itemView.selected_color_view.visible()
-        else itemView.selected_color_view.gone()
-        itemView.color_view.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
+        if (item.isSelected) binding.selectedColorView.visible()
+        else binding.selectedColorView.gone()
+        binding.colorView.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
     }
 }

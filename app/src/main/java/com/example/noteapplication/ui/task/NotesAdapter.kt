@@ -6,14 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapplication.R
 import com.example.noteapplication.data.model.Task
-import kotlinx.android.synthetic.main.item_note.view.*
+import com.example.noteapplication.databinding.ItemNoteBinding
+import com.example.noteapplication.databinding.ItemProjectBinding
+import com.example.noteapplication.ui.project.ProjectViewHolder
 
 class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<TasksViewHolder>() {
 
     private var items = mutableListOf<Task>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
-        return TasksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false))
+        val binding = ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TasksViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -26,7 +29,7 @@ class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<Ta
         holder.itemView.setOnClickListener {
             listener.onItemClick(item)
         }
-        holder.itemView.cb_task.setOnClickListener {
+        holder.binding.cbTask.setOnClickListener {
             listener.onCheckedClick(item, position)
         }
         holder.itemView.setOnLongClickListener {
@@ -54,10 +57,10 @@ class TaskAdapter(private var listener: ClickListener) : RecyclerView.Adapter<Ta
 
 }
 
-class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TasksViewHolder(var binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: Task) {
-        itemView.tv_task.text = item.content
+        binding.tvTask.text = item.content
         val stateOfTask = item.completed ?: false
-        itemView.cb_task.isChecked = stateOfTask
+        binding.cbTask.isChecked = stateOfTask
     }
 }

@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapplication.ColorType
 import com.example.noteapplication.R
 import com.example.noteapplication.data.model.PrimaryColor
+import com.example.noteapplication.databinding.BottomSheetColorPickerBinding
+import com.example.noteapplication.databinding.ItemColorBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_color_picker.*
 
 interface PickerColorListener {
     fun choosedColor(colors: MutableList<PrimaryColor>)
@@ -22,10 +23,11 @@ class ColorPickerBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     private var listener: PickerColorListener? = null
     private var pickerColors: MutableList<PrimaryColor> = ColorType.getNotesPallette()
-
+    private var binding : BottomSheetColorPickerBinding? = null
     private var adapter: ColorAdapter? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.bottom_sheet_color_picker, container, false)
+        binding = BottomSheetColorPickerBinding.inflate(LayoutInflater.from(requireContext()))
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,8 +47,8 @@ class ColorPickerBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     private fun setupRecyclerView() {
         adapter = ColorAdapter(this)
-        recycler_view.adapter = adapter
-        recycler_view.layoutManager = GridLayoutManager(requireContext(), COUNT_OF_ROW)
+        binding?.recyclerView?.adapter = adapter
+        binding?.recyclerView?.layoutManager = GridLayoutManager(requireContext(), COUNT_OF_ROW)
         adapter?.addItems(pickerColors)
     }
 

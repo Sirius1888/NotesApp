@@ -13,18 +13,22 @@ import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.base.NoteEvent
 import com.example.noteapplication.data.model.Project
 import com.example.noteapplication.data.model.Task
-import kotlinx.android.synthetic.main.activity_notes_list.*
-import kotlinx.android.synthetic.main.view_bottom_tab.*
+import com.example.noteapplication.databinding.ActivityNotesListBinding
+import com.example.noteapplication.databinding.ViewBottomTabBinding
 
-class NotesListActivity : BaseActivity<NotesListViewModel>(
-        R.layout.activity_notes_list,
+class NotesListActivity : BaseActivity<NotesListViewModel, ActivityNotesListBinding>(
         NotesListViewModel::class
 ), TaskAdapter.ClickListener {
+
+    override fun getViewBinding(): ActivityNotesListBinding = ActivityNotesListBinding.inflate(layoutInflater)
+
+    private var bottomBinding: ViewBottomTabBinding? = null
 
     private lateinit var adapter: TaskAdapter
     private lateinit var dialog: AlertDialog
 
     override fun setupViews() {
+        bottomBinding =  ViewBottomTabBinding.inflate(LayoutInflater.from(this))
         getIntentData()
         setupRecyclerView()
         addAction()
@@ -36,8 +40,8 @@ class NotesListActivity : BaseActivity<NotesListViewModel>(
 
     private fun setupRecyclerView() {
         adapter = TaskAdapter(this)
-        recycler_view.layoutManager = LinearLayoutManager(this)
-        recycler_view.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 
     override fun subscribeToLiveData() {
@@ -72,7 +76,7 @@ class NotesListActivity : BaseActivity<NotesListViewModel>(
     }
 
     private fun addAction() {
-        btn_add.setOnClickListener {
+        bottomBinding?.btnAdd?.setOnClickListener {
             showCreateNoteDialog()
         }
     }

@@ -10,15 +10,16 @@ import androidx.lifecycle.Observer
 import com.example.noteapplication.R
 import com.example.noteapplication.base.BaseActivity
 import com.example.noteapplication.data.model.PrimaryColor
-import com.example.noteapplication.showToast
+import com.example.noteapplication.databinding.ActivityCreateProjectBinding
 import com.example.noteapplication.visible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.activity_create_project.*
 
-class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
-        R.layout.activity_create_project,
+class CreateProjectActivity : BaseActivity<CreateProjectViewModel, ActivityCreateProjectBinding>(
         CreateProjectViewModel::class
 ), PickerColorListener {
+
+    override fun getViewBinding(): ActivityCreateProjectBinding
+            = ActivityCreateProjectBinding.inflate(layoutInflater)
 
     var selectedColor: PrimaryColor? = null
 
@@ -35,7 +36,7 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     }
 
     private fun createProject() {
-        val projectName = et_input_project_title.text.toString()
+        val projectName = binding.etInputProjectTitle.text.toString()
         viewModel.createProject(projectName, selectedColor?.id)
     }
 
@@ -45,15 +46,15 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = resources.getString(R.string.create_project)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar?.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun setupColorPicker() {
-        btn_select_color.setOnClickListener {
+        binding.btnSelectColor.setOnClickListener {
             val bottomSheetDialogFragment: BottomSheetDialogFragment =
                 ColorPickerBottomSheetDialogFragment()
             bottomSheetDialogFragment.isCancelable = true
@@ -83,8 +84,8 @@ class CreateProjectActivity : BaseActivity<CreateProjectViewModel>(
 
     private fun setupSelectedViews(item: PrimaryColor) {
         selectedColor = item
-        color_view.visible()
-        color_view.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
-        btn_select_color.text = "Change color"
+        binding.colorView.visible()
+        binding.colorView.background.setColorFilter(Color.parseColor(item.hexCode), PorterDuff.Mode.SRC_ATOP)
+        binding.btnSelectColor.text = "Change color"
     }
 }

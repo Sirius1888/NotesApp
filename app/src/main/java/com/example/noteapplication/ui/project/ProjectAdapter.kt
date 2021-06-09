@@ -11,15 +11,17 @@ import com.example.noteapplication.ColorType.getProjectColorType
 import com.example.noteapplication.base.BaseAdapter
 import com.example.noteapplication.base.BaseViewHolder
 import com.example.noteapplication.data.model.Project
-import kotlinx.android.synthetic.main.item_color.view.*
-import kotlinx.android.synthetic.main.item_project.view.*
+import com.example.noteapplication.databinding.ItemColorBinding
+import com.example.noteapplication.databinding.ItemProjectBinding
+import com.example.noteapplication.ui.create_project.ColorViewHolder
 
 class ProjectAdapter(private var listener: ClickListener) : BaseAdapter() {
 
     private var items = mutableListOf<Project>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return ProjectViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false))
+        val binding = ItemProjectBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ProjectViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -45,9 +47,9 @@ class ProjectAdapter(private var listener: ClickListener) : BaseAdapter() {
     }
 }
 
-class ProjectViewHolder(itemView: View) : BaseViewHolder(itemView) {
+class ProjectViewHolder(var binding: ItemProjectBinding) : BaseViewHolder(binding.root) {
     fun bind(item: Project) {
-        itemView.view_project_indicator.setBackgroundColor(getProjectColorType(item.color))
-        itemView.tv_title.text = item.name
+        binding.viewProjectIndicator.setBackgroundColor(getProjectColorType(item.color))
+        binding.tvTitle.text = item.name
     }
 }
